@@ -22,7 +22,13 @@ export default class WebSocketApp extends Component {
     ws.onopen = () => {
       // connection opened
       console.log("I openend the connection without troubles!");
-      // ws.send('something'); // send a message
+
+      // First step is to try subscribe to the proper channel
+
+      // let subscribe_command = {"command":"subscribe","identifier":"{\"channel\":\"ConversationChannel\"}"}
+      let subscribe_command = "{\"command\":\"subscribe\",\"identifier\":\"{\"channel\":\"ConversationChannel\"}\"}"
+
+      ws.send(subscribe_command); // send a message
     };
 
     ws.onmessage = (e) => {

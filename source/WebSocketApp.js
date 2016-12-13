@@ -9,10 +9,44 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  // WebSocket
 } from 'react-native';
 
 export default class WebSocketApp extends Component {
+
+  componentDidMount(){
+    const ws = new WebSocket('ws://localhost:3000/cable');
+
+    // let's try to be very basic here
+    ws.onopen = () => {
+      // connection opened
+      console.log("I openend the connection without troubles!");
+      // ws.send('something'); // send a message
+    };
+
+    ws.onmessage = (e) => {
+      console.log("A message was received");
+      // a message was received
+      console.log(e.data);
+    };
+
+    ws.onerror = (e) => {
+      console.log("There has been an error");
+
+      // an error occurred
+      console.log(e.message);
+    };
+
+    ws.onclose = (e) => {
+      // connection closed
+      console.log("I'm closing it");
+
+      console.log(e.code, e.reason);
+    };
+
+  }
+
   render() {
     return (
       <View style={styles.container}>

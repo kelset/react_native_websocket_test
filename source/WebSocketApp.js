@@ -10,15 +10,25 @@ import {
   StyleSheet,
   Text,
   View,
+  Button,
   // WebSocket
 } from 'react-native';
 
+let ws;
+
 export default class WebSocketApp extends Component {
 
-  componentDidMount(){
-    const ws = new WebSocket('ws://localhost:3000/cable');
+  constructor(props) {
+    super(props)
+  }
 
+  componentDidMount(){
     // let's try to be very basic here
+  }
+
+  _openWebSocket(){
+    ws = new WebSocket('ws://localhost:3000/cable');
+
     ws.onopen = () => {
       // connection opened
       console.log("I openend the connection without troubles!");
@@ -53,16 +63,34 @@ export default class WebSocketApp extends Component {
 
   }
 
+  _closeWebSocket(){
+    console.log("I'm closing the websocket");
+
+    ws.close()
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
+        <View style={{flexDirection: "row", flex:0.2, alignItems: "center", justifyContent: "center"}}>
+          <Button
+            onPress={() => this._openWebSocket()}
+            title="Open Websocket"
+          />
+          <Button
+            onPress={() => this._closeWebSocket()}
+            title="Close Websocket"
+          />
+        </View>
+        <View style={{backgroundColor:"coral", flex:0.8}}>
+          <Text style={styles.welcome}>
+            Welcome to React Native!
+          </Text>
+          <Text style={styles.instructions}>
+            Double tap R on your keyboard to reload,{'\n'}
+            Shake or press menu button for dev menu
+          </Text>
+        </View>
       </View>
     );
   }
@@ -71,8 +99,7 @@ export default class WebSocketApp extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'space-around',
     backgroundColor: '#F5FCFF',
   },
   welcome: {

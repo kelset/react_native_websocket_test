@@ -35,10 +35,24 @@ export default class WebSocketApp extends Component {
 
       // First step is to try subscribe to the proper channel
 
+      let payload = {
+        command: 'subscribe',
+        identifier: JSON.stringify({ channel: 'ConversationChannel' }),
+        // data: JSON.stringify({ to: 'user', message: 'hi', action: 'chat' }),
+      }
+
+      let subscribe_command = JSON.stringify(payload)
+
       // let subscribe_command = {"command":"subscribe","identifier":"{\"channel\":\"ConversationChannel\"}"}
-      let subscribe_command = "{\"command\":\"subscribe\",\"identifier\":\"{\"channel\":\"ConversationChannel\"}\"}"
+      // let subscribe_command = "{\"command\":\"subscribe\",\"identifier\":\"{\"channel\":\"ConversationChannel\"}\"}"
 
       ws.send(subscribe_command); // send a message
+
+      payload = {
+        command: 'command text',
+        identifier: JSON.stringify({ channel: 'MeshRelayChannel' }),
+        data: JSON.stringify({ to: 'user', message: 'hi', action: 'chat' }),
+      }
     };
 
     ws.onmessage = (e) => {

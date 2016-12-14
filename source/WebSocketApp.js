@@ -76,7 +76,7 @@ export default class WebSocketApp extends Component {
           });
 
           this.setState({
-            messages: custom_messages
+            messages: custom_messages.reverse()
           });
         }
 

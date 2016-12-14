@@ -100,7 +100,9 @@ export default class WebSocketApp extends Component {
         {name:"conversation_id", value: conversation_id.toString()},
         {name:"user_id", value: user_id.toString()},
         {name:"body", value:messages[0].text},
-      ]}),
+      ],
+        action: "speak",
+      }),
     }
 
     let speak_command = JSON.stringify(payload)

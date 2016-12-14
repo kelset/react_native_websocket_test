@@ -79,11 +79,28 @@ export default class WebSocketApp extends Component {
 
   onSend(messages = []) {
     console.log("I'm trying to speak now!");
+    /*
+
+     OK:
+    (command.speak)
+    ({"message"=>[{"name"=>"conversation_id", "value"=>"1"}, {"name"=>"user_id", "value"=>"1"}, {"name"=>"body", "value"=>"test"}]})
+
+     NOT OK:
+    (command.message)
+    ({"message"=>[{"name"=>"conversation_id", "value"=>2}, {"name"=>"user_id", "value"=>3}, {"name"=>"body", "value"=>"Test"}]})
+
+    */
+    let conversation_id = 2
+    let user_id = 3
 
     let payload = {
       command: 'message',
       identifier: JSON.stringify({ channel: 'ConversationChannel' }),
-      data: JSON.stringify({ conversation_id: '2', user_id: '3', body: messages[0].text }),
+      data: JSON.stringify({message: [
+        {name:"conversation_id", value: conversation_id.toString()},
+        {name:"user_id", value: user_id.toString()},
+        {name:"body", value:messages[0].text},
+      ]}),
     }
 
     let speak_command = JSON.stringify(payload)

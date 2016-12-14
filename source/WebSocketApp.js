@@ -50,9 +50,41 @@ export default class WebSocketApp extends Component {
     };
 
     ws.onmessage = (e) => {
-      console.log("A message was received");
-      // a message was received
-      console.log(e.data);
+
+      let data_received = JSON.parse(e.data)
+
+      if (data_received.type !== "ping") {
+        console.log("Data was received: ", data_received);
+
+        if (data_received.message) {
+          let custom_messages = []
+
+          data_received.message.messages_raw.forEach( (single_message) => {
+              // console.log(single_message);
+              custom_messages.push(
+                {
+                  _id: single_message.id,
+                  text: single_message.body,
+                  createdAt: new Date(single_message.created_at),
+                  user: {
+                    _id: single_message.user_id,
+                    name: (single_message.user_id === 3 ? 'User Three' : 'User One'),
+                  },
+                }
+              )
+
+          });
+
+          this.setState({
+            messages: custom_messages
+          });
+        }
+
+      }
+
+      // console.log("A message was received");
+      // // a message was received
+      // console.log(e.data);
     };
 
     ws.onerror = (e) => {

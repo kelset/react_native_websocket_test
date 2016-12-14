@@ -14,12 +14,16 @@ import {
   // WebSocket
 } from 'react-native';
 
+import { GiftedChat } from 'react-native-gifted-chat';
+
 let ws;
 
 export default class WebSocketApp extends Component {
 
   constructor(props) {
     super(props)
+    this.state = {messages: []};
+    this.onSend = this.onSend.bind(this);
   }
 
   componentDidMount(){
@@ -42,17 +46,7 @@ export default class WebSocketApp extends Component {
       }
 
       let subscribe_command = JSON.stringify(payload)
-
-      // let subscribe_command = {"command":"subscribe","identifier":"{\"channel\":\"ConversationChannel\"}"}
-      // let subscribe_command = "{\"command\":\"subscribe\",\"identifier\":\"{\"channel\":\"ConversationChannel\"}\"}"
-
       ws.send(subscribe_command); // send a message
-
-      payload = {
-        command: 'command text',
-        identifier: JSON.stringify({ channel: 'MeshRelayChannel' }),
-        data: JSON.stringify({ to: 'user', message: 'hi', action: 'chat' }),
-      }
     };
 
     ws.onmessage = (e) => {
@@ -83,6 +77,42 @@ export default class WebSocketApp extends Component {
     ws.close()
   }
 
+  onSend(messages = []) {
+    console.log("I'm trying to speak now!");
+
+    let payload = {
+      command: 'message',
+      identifier: JSON.stringify({ channel: 'ConversationChannel' }),
+      data: JSON.stringify({ conversation_id: '2', user_id: '3', body: messages[0].text }),
+    }
+
+    let speak_command = JSON.stringify(payload)
+    ws.send(speak_command); // send a message
+
+    this.setState((previousState) => {
+      return {
+        messages: GiftedChat.append(previousState.messages, messages),
+      };
+    });
+  }
+
+  // onReceive(text) {
+  //   this.setState((previousState) => {
+  //     return {
+  //       messages: GiftedChat.append(previousState.messages, {
+  //         _id: Math.round(Math.random() * 1000000),
+  //         text: text,
+  //         createdAt: new Date(),
+  //         user: {
+  //           _id: 2,
+  //           name: 'React Native',
+  //           // avatar: 'https://facebook.github.io/react/img/logo_og.png',
+  //         },
+  //       }),
+  //     };
+  //   });
+  // }
+
   render() {
     return (
       <View style={styles.container}>
@@ -97,13 +127,13 @@ export default class WebSocketApp extends Component {
           />
         </View>
         <View style={{backgroundColor:"coral", flex:0.8}}>
-          <Text style={styles.welcome}>
-            Welcome to React Native!
-          </Text>
-          <Text style={styles.instructions}>
-            Double tap R on your keyboard to reload,{'\n'}
-            Shake or press menu button for dev menu
-          </Text>
+          <GiftedChat
+            messages={this.state.messages}
+            onSend={this.onSend}
+            user={{
+              _id: 3,
+            }}
+          />
         </View>
       </View>
     );

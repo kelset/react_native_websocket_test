@@ -32,7 +32,7 @@ export default class WebSocketApp extends Component {
 
   _openWebSocket(){
     console.log("Trying to open!");
-    ws = new WebSocket('ws://localhost:3000/cable?id=3');
+    ws = new WebSocket('ws://10.0.0.5:3000/cable?id=1');
 
     ws.onopen = () => {
       // connection opened
@@ -107,7 +107,7 @@ export default class WebSocketApp extends Component {
 
     */
     let conversation_id = 2
-    let user_id = 3
+    let user_id = 1
 
     let payload = {
       command: 'message',
@@ -166,7 +166,7 @@ export default class WebSocketApp extends Component {
             messages={this.state.messages}
             onSend={this.onSend}
             user={{
-              _id: 3,
+              _id: 1,
             }}
           />
         </View>

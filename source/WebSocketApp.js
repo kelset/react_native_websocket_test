@@ -31,7 +31,8 @@ export default class WebSocketApp extends Component {
   }
 
   _openWebSocket(){
-    ws = new WebSocket('ws://localhost:3000/cable');
+    console.log("Trying to open!");
+    ws = new WebSocket('ws://localhost:3000/cable?id=3');
 
     ws.onopen = () => {
       // connection opened
@@ -42,7 +43,7 @@ export default class WebSocketApp extends Component {
       let payload = {
         command: 'subscribe',
         identifier: JSON.stringify({ channel: 'ConversationChannel' }),
-        // data: JSON.stringify({ to: 'user', message: 'hi', action: 'chat' }),
+        // data: JSON.stringify({ id: '1'}),
       }
 
       let subscribe_command = JSON.stringify(payload)
@@ -106,7 +107,7 @@ export default class WebSocketApp extends Component {
 
     */
     let conversation_id = 2
-    let user_id = 1
+    let user_id = 3
 
     let payload = {
       command: 'message',
@@ -165,7 +166,7 @@ export default class WebSocketApp extends Component {
             messages={this.state.messages}
             onSend={this.onSend}
             user={{
-              _id: 1,
+              _id: 3,
             }}
           />
         </View>

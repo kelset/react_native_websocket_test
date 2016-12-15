@@ -57,26 +57,9 @@ export default class WebSocketApp extends Component {
         console.log("Data was received: ", data_received);
 
         if (data_received.message) {
-          let custom_messages = []
-
-          data_received.message.messages_raw.forEach( (single_message) => {
-              // console.log(single_message);
-              custom_messages.push(
-                {
-                  _id: single_message.id,
-                  text: single_message.body,
-                  createdAt: new Date(single_message.created_at),
-                  user: {
-                    _id: single_message.user_id,
-                    name: (single_message.user_id === 3 ? 'User Three' : 'User One'),
-                  },
-                }
-              )
-
-          });
 
           this.setState({
-            messages: custom_messages.reverse()
+            messages: data_received.message.messages_raw.reverse()
           });
         }
 
@@ -123,7 +106,7 @@ export default class WebSocketApp extends Component {
 
     */
     let conversation_id = 2
-    let user_id = 3
+    let user_id = 1
 
     let payload = {
       command: 'message',
@@ -182,7 +165,7 @@ export default class WebSocketApp extends Component {
             messages={this.state.messages}
             onSend={this.onSend}
             user={{
-              _id: 3,
+              _id: 1,
             }}
           />
         </View>
